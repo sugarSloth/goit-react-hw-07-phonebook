@@ -1,38 +1,40 @@
-import css from './ContactForm.module.css'
-import { toast } from "react-toastify";
+import css from './ContactForm.module.css';
+import { toast } from 'react-toastify';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/operations';
-import {selectContacts } from 'redux/selectors';
-
+import { selectContacts } from 'redux/selectors';
 
 export function ContactForm() {
-  const contacts = useSelector(selectContacts)
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     const form = e.currentTarget;
     e.preventDefault();
-      const newName = form.elements.name.value;
-      const newPhone = form.elements.phone.value; 
+    const newName = form.elements.name.value;
+    const newPhone = form.elements.phone.value;
 
-    if(contacts.find(({name}) => name === newName)) {
-        toast.info(`${newName} is already in contacts`);
-    } else {dispatch(addContact({name: newName,
-      phone: newPhone})).unwrap()
-      .then(() => 
-      toast.success(`${newName} successfully added!`))
-      .catch(() => 
-        toast.error(`Something went wrong, ${newName} not added. Try again `))     
+    if (contacts.find(({ name }) => name === newName)) {
+      toast.info(`${newName} is already in contacts`);
+    } else {
+      dispatch(addContact({ name: newName, phone: newPhone }))
+        .unwrap()
+        .then(() => toast.success(`${newName} successfully added!`))
+        .catch(() =>
+          toast.error(`Something went wrong, ${newName} not added. Try again `)
+        );
     }
 
-    form.reset()
-  }
+    form.reset();
+  };
 
   return (
     <>
       <form onSubmit={handleSubmit} className={css.form}>
-        <label htmlFor="name" className={css.label}>Name</label>
+        <label htmlFor="name" className={css.label}>
+          Name
+        </label>
         <input
           className={css.input}
           type="text"
@@ -43,7 +45,9 @@ export function ContactForm() {
           required
         />
 
-        <label htmlFor="phone" className={css.label}>Phone</label>
+        <label htmlFor="phone" className={css.label}>
+          Phone
+        </label>
         <input
           className={css.input}
           type="tel"
@@ -54,8 +58,10 @@ export function ContactForm() {
           required
         />
 
-        <button type="submit" className={css.button}>Add contact</button>
+        <button type="submit" className={css.button}>
+          Add contact
+        </button>
       </form>
     </>
-    )
+  );
 }
